@@ -1,58 +1,37 @@
 // src/components/DrawerNavigation.js
-
-import React from 'react';
+import React, { useState } from 'react'; // Only one import statement for React
 import { Link } from 'react-router-dom';
-import { Drawer, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 
 function DrawerNavigation() {
-  const [open, setOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleDrawer = (open) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-    setOpen(open);
+  const toggleDrawer = () => {
+    setIsOpen(!isOpen);
   };
 
-  const list = () => (
-    <div
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      <List>
-        <ListItem button component={Link} to="/">
-          <ListItemText primary="Home" />
-        </ListItem>
-        <ListItem button component={Link} to="/dashboard">
-          <ListItemText primary="Dashboard" />
-        </ListItem>
-        <ListItem button component={Link} to="/about">
-          <ListItemText primary="About" />
-        </ListItem>
-        <ListItem button component={Link} to="/contact">
-          <ListItemText primary="Contact" />
-        </ListItem>
-        {/* Add more navigation items as needed */}
-      </List>
-    </div>
-  );
-
   return (
-    <>
-      <IconButton
-        edge="start"
-        color="inherit"
-        aria-label="menu"
-        onClick={toggleDrawer(true)}
-      >
-        <MenuIcon />
-      </IconButton>
-      <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
-        {list()}
-      </Drawer>
-    </>
+    <div>
+      <button onClick={toggleDrawer} className="p-2 text-white bg-blue-600 rounded">
+        {isOpen ? <CloseIcon /> : <MenuIcon />}
+      </button>
+      {isOpen && (
+        <>
+          <div className="fixed inset-0 bg-black opacity-50" onClick={toggleDrawer}></div>
+          <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-50">
+            <ul className="p-4">
+              <li><Link to="/" onClick={toggleDrawer}>Home</Link></li>
+              <li><Link to="/dashboard" onClick={toggleDrawer}>Dashboard</Link></li>
+              <li><Link to="/about" onClick={toggleDrawer}>About</Link></li>
+              <li><Link to="/contact" onClick={toggleDrawer}>Contact</Link></li>
+              <li><Link to="/login" onClick={toggleDrawer}>Login</Link></li>
+              <li><Link to="/register" onClick={toggleDrawer}>Register</Link></li>
+            </ul>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 

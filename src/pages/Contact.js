@@ -6,7 +6,7 @@ function Contact() {
       <h1 className="text-4xl sm:text-5xl font-bold mb-6">Contact Us</h1>
       <p className="text-lg sm:text-xl text-center max-w-xl mb-4">
         For inquiries, please reach out to us at 
-        <a href="mailto:contact@herpath.com" className="underline text-yellow-300 hover:text-yellow-400"> contact@herpath.com</a>.
+        <a href="mailto:contactherpath@gmail.com" className="underline text-yellow-300 hover:text-yellow-400">Contact@herpath.com  </a>.
       </p>
       <p className="text-md sm:text-lg text-center max-w-xl mb-8">
         You can also find us on our social media channels, or fill out the form below to send us a message directly.

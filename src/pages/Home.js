@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
-import guidanceImage from '../Assets/Guidance.jpeg';
+import logoImage from '../Assets/logo.jpeg';
 import ImageComponent from '../components/ImageComponent';
 
 function Home() {
@@ -9,7 +9,7 @@ function Home() {
       {/* Logo Section */}
       <div className="absolute top-0 right-0 m-4">
         <ImageComponent 
-          src={guidanceImage} 
+          src={logoImage} 
           alt="HerPath Logo" 
           className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
         />

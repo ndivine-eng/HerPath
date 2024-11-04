@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, createContext, useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -8,40 +8,47 @@ import Contact from './pages/Contact';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import UserProfile from './pages/UserProfile';
+import ForgotPassword from './pages/ForgotPassword';
+
+const UserContext = createContext();
+
+export const useUser = () => useContext(UserContext);
 
 function App() {
-  const [user, setUser] = useState(null); // State to manage user authentication
+  const [user, setUser] = useState(null);
 
   const handleLogin = (userData) => {
-    setUser(userData); // Set user data on login
+    setUser(userData);
   };
 
   const handleLogout = () => {
-    setUser(null); // Clear user data on logout
+    setUser(null);
+  };
+
+  const PrivateRoute = ({ element }) => {
+    return user ? element : <Navigate to="/login" />;
   };
 
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen">
-        {/* Navbar */}
-        <Navbar user={user} onLogout={handleLogout} />
-
-        {/* Main content */}
-        <div className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login onLogin={handleLogin} />} />
-            <Route path="/profile" element={<UserProfile user={user} onLogout={handleLogout} />} />
-          </Routes>
+    <UserContext.Provider value={{ user, handleLogin, handleLogout }}>
+      <Router>
+        <div className="flex flex-col min-h-screen">
+          <Navbar user={user} onLogout={handleLogout} />
+          <div className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/profile" element={<PrivateRoute element={<UserProfile user={user} onLogout={handleLogout} />} />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+            </Routes>
+          </div>
+          <Footer />
         </div>
-
-        {/* Footer */}
-        <Footer />
-      </div>
-    </Router>
+      </Router>
+    </UserContext.Provider>
   );
 }
 

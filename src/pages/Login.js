@@ -1,27 +1,29 @@
 import React, { useState } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase'; // Adjust the path as necessary
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 
 function Login() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // Initialize the navigate function
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    // Simulate login logic (replace with actual API call)
-    setTimeout(() => {
-      if (username === 'test' && password === 'password') {
-        // Simulate successful login
-        alert('Login successful!');
-      } else {
-        setError('Invalid username or password');
-      }
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      alert('Login successful!');
+      // Optionally, navigate to a different page after login
+    } catch (err) {
+      setError(err.message);
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -31,12 +33,12 @@ function Login() {
         {error && <div className="text-red-500 mb-4">{error}</div>}
         
         <div className="mb-4">
-          <label className="block text-teal-600 font-semibold mb-2" htmlFor="username">Username</label>
+          <label className="block text-teal-600 font-semibold mb-2" htmlFor="email">Email</label>
           <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="border rounded py-2 px-3 text-gray-800 w-full focus:outline-none focus:ring-2 focus:ring-teal-400"
             required
           />
@@ -54,17 +56,6 @@ function Login() {
           />
         </div>
 
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            id="rememberMe"
-            checked={rememberMe}
-            onChange={(e) => setRememberMe(e.target.checked)}
-            className="mr-2"
-          />
-          <label htmlFor="rememberMe" className="text-teal-600">Remember Me</label>
-        </div>
-
         <button
           type="submit"
           className={`bg-teal-600 text-white px-4 py-2 rounded-full font-bold hover:bg-teal-500 transition duration-300 w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -74,7 +65,12 @@ function Login() {
         </button>
 
         <div className="mt-4 text-center">
-          <a href="/forgot-password" className="text-teal-600 hover:underline">Forgot Password?</a>
+          <a 
+            href="/forgot-password" 
+            className="text-teal-600 hover:underline"
+          >
+            Forgot Password?
+          </a>
         </div>
       </form>
     </div>

@@ -2,6 +2,12 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const Navbar = ({ user, onLogout }) => {
+  const handleLogout = () => {
+    if (window.confirm("Are you sure you want to logout?")) {
+      onLogout();
+    }
+  };
+
   return (
     <nav className="bg-blue-500 p-4">
       <div className="container mx-auto flex justify-between items-center">
@@ -11,6 +17,7 @@ const Navbar = ({ user, onLogout }) => {
             exact 
             className="text-white hover:text-gray-200" 
             style={({ isActive }) => isActive ? { color: 'yellow', fontWeight: 'bold' } : {}}
+            aria-label="Go to homepage"
           >
             HerPath
           </NavLink>
@@ -23,6 +30,7 @@ const Navbar = ({ user, onLogout }) => {
                 exact 
                 className="text-white hover:text-gray-200" 
                 style={({ isActive }) => isActive ? { color: 'yellow', fontWeight: 'bold' } : {}}
+                aria-label="Go to Home"
               >
                 Home
               </NavLink>
@@ -32,6 +40,7 @@ const Navbar = ({ user, onLogout }) => {
                 to="/about" 
                 className="text-white hover:text-gray-200" 
                 style={({ isActive }) => isActive ? { color: 'yellow', fontWeight: 'bold' } : {}}
+                aria-label="Learn more about us"
               >
                 About
               </NavLink>
@@ -41,6 +50,7 @@ const Navbar = ({ user, onLogout }) => {
                 to="/contact" 
                 className="text-white hover:text-gray-200" 
                 style={({ isActive }) => isActive ? { color: 'yellow', fontWeight: 'bold' } : {}}
+                aria-label="Contact us"
               >
                 Contact
               </NavLink>
@@ -52,6 +62,7 @@ const Navbar = ({ user, onLogout }) => {
                     to="/login" 
                     className="text-white hover:text-gray-200" 
                     style={({ isActive }) => isActive ? { color: 'yellow', fontWeight: 'bold' } : {}}
+                    aria-label="Login to your account"
                   >
                     Login
                   </NavLink>
@@ -61,6 +72,7 @@ const Navbar = ({ user, onLogout }) => {
                     to="/register" 
                     className="text-white hover:text-gray-200" 
                     style={({ isActive }) => isActive ? { color: 'yellow', fontWeight: 'bold' } : {}}
+                    aria-label="Register a new account"
                   >
                     Register
                   </NavLink>
@@ -73,12 +85,15 @@ const Navbar = ({ user, onLogout }) => {
                     to="/profile" 
                     className="text-white hover:text-gray-200" 
                     style={({ isActive }) => isActive ? { color: 'yellow', fontWeight: 'bold' } : {}}
+                    aria-label="Go to your profile"
                   >
                     Profile
                   </NavLink>
                 </li>
                 <li>
-                  <button onClick={onLogout} className="text-white hover:text-gray-200">Logout</button>
+                  <button onClick={handleLogout} className="text-white hover:text-gray-200" aria-label="Logout from your account">
+                    Logout
+                  </button>
                 </li>
               </>
             )}

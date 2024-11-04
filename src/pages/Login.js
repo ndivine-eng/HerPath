@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase'; // Adjust the path as necessary
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
@@ -18,7 +18,7 @@ function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert('Login successful!');
-      // Optionally, navigate to a different page after login
+      navigate('/profile'); // Navigate to the profile page upon successful login
     } catch (err) {
       setError(err.message);
     } finally {

@@ -82,6 +82,16 @@ const Navbar = ({ user, onLogout }) => {
               <>
                 <li>
                   <NavLink 
+                    to="/dashboard" 
+                    className="text-white hover:text-gray-200" 
+                    style={({ isActive }) => isActive ? { color: 'yellow', fontWeight: 'bold' } : {}}
+                    aria-label="Go to your dashboard"
+                  >
+                    Dashboard
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink 
                     to="/profile" 
                     className="text-white hover:text-gray-200" 
                     style={({ isActive }) => isActive ? { color: 'yellow', fontWeight: 'bold' } : {}}

@@ -1,47 +1,98 @@
 import React, { useState } from 'react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase'; // Adjust the path as necessary
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { db } from '../firebase'; // Import Firestore database
+import { setDoc, doc } from 'firebase/firestore';
 
 function Register() {
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState(''); // New state for name
+  const [bio, setBio] = useState(''); // New state for bio
+  const [profilePhoto, setProfilePhoto] = useState(null); // New state for profile photo
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // Initialize the navigate function
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    // Simulate registration logic (replace with actual API call)
-    setTimeout(() => {
-      if (username && email && password) {
-        // Simulate successful registration
-        alert('Registration successful!');
-      } else {
-        setError('Please fill in all fields');
-      }
+    try {
+      // Create user with email and password
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Prepare user data to save in Firestore
+      const userData = {
+        email: user.email,
+        name: name,
+        bio: bio,
+        profilePhoto: profilePhoto ? await uploadProfilePhoto(profilePhoto) : null, // Function to upload photo if necessary
+      };
+
+      // Save user data to Firestore
+      await setDoc(doc(db, 'users', user.uid), userData);
+
+      alert('Registration successful!');
+      navigate('/login'); // Navigate to the login page after successful registration
+    } catch (err) {
+      setError(err.message);
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
+  };
+
+  // Function to handle profile photo upload (if needed)
+  const uploadProfilePhoto = async (file) => {
+    // Implement your photo upload logic here, e.g., using Firebase Storage
+    // Return the URL of the uploaded photo
+    return 'url_of_uploaded_photo'; // Placeholder return
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-teal-500 to-blue-800 text-white p-6">
-      <h1 className="text-4xl sm:text-5xl font-extrabold mb-6">Register</h1>
+      <h1 className="text-4xl font-extrabold mb-6">Register</h1>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         {error && <div className="text-red-500 mb-4">{error}</div>}
         
         <div className="mb-4">
-          <label className="block text-teal-600 font-semibold mb-2" htmlFor="username">Username</label>
+          <label className="block text-teal-600 font-semibold mb-2" htmlFor="name">Name</label>
           <input
             type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className="border rounded py-2 px-3 text-gray-800 w-full focus:outline-none focus:ring-2 focus:ring-teal-400"
             required
           />
         </div>
-        
+
+        <div className="mb-4">
+          <label className="block text-teal-600 font-semibold mb-2" htmlFor="bio">Bio</label>
+          <textarea
+            id="bio"
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            className="border rounded py-2 px-3 text-gray-800 w-full focus:outline-none focus:ring-2 focus:ring-teal-400"
+            rows="3"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-teal-600 font-semibold mb-2" htmlFor="profilePhoto">Profile Photo</label>
+          <input
+            type="file"
+            id="profilePhoto"
+            onChange={(e) => setProfilePhoto(e.target.files[0])} // Set selected file
+            className="border rounded py-2 px-3 text-gray-800 w-full focus:outline-none focus:ring-2 focus:ring-teal-400"
+            accept="image/*"
+          />
+        </div>
+
         <div className="mb-4">
           <label className="block text-teal-600 font-semibold mb-2" htmlFor="email">Email</label>
           <input
@@ -54,7 +105,7 @@ function Register() {
           />
         </div>
         
-        <div className="mb-6">
+        <div className="mb-4">
           <label className="block text-teal-600 font-semibold mb-2" htmlFor="password">Password</label>
           <input
             type="password"
@@ -65,7 +116,7 @@ function Register() {
             required
           />
         </div>
-        
+
         <button
           type="submit"
           className={`bg-teal-600 text-white px-4 py-2 rounded-full font-bold hover:bg-teal-500 transition duration-300 w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -73,6 +124,19 @@ function Register() {
         >
           {loading ? 'Registering...' : 'Register'}
         </button>
+
+        {/* Link to Login page */}
+        <div className="mt-4 text-center">
+          <p className="text-teal-600">
+            Already have an account?{' '}
+            <button 
+              onClick={() => navigate('/login')} 
+              className="text-yellow-500 hover:underline"
+            >
+              Sign In
+            </button>
+          </p>
+        </div>
       </form>
     </div>
   );

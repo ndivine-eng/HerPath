@@ -9,7 +9,8 @@ import Contact from './pages/Contact';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import UserProfile from './pages/UserProfile';
-import ProfileUpdate from './pages/ProfileUpdate'; // Import ProfileUpdate
+import ProfileUpdate from './pages/ProfileUpdate'; 
+import Dashboard from './pages/Dashboard';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -34,7 +35,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route path="/profile" element={<UserProfile user={user} onLogout={handleLogout} />} />
-            <Route path="/profile-update" element={<ProfileUpdate />} /> {/* Add ProfileUpdate route */}
+            <Route path="/profile-update" element={<ProfileUpdate />} /> 
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </div>
         <Footer />

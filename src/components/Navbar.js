@@ -57,26 +57,7 @@ const Navbar = ({ user, onLogout }) => {
             </li>
             {!user ? (
               <>
-                <li>
-                  <NavLink 
-                    to="/login" 
-                    className="text-white hover:text-gray-200" 
-                    style={({ isActive }) => isActive ? { color: 'yellow', fontWeight: 'bold' } : {}}
-                    aria-label="Login to your account"
-                  >
-                    Login
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink 
-                    to="/register" 
-                    className="text-white hover:text-gray-200" 
-                    style={({ isActive }) => isActive ? { color: 'yellow', fontWeight: 'bold' } : {}}
-                    aria-label="Register a new account"
-                  >
-                    Register
-                  </NavLink>
-                </li>
+             
               </>
             ) : (
               <>

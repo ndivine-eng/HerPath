@@ -17,10 +17,10 @@ function Login() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert('Login successful!');
-      navigate('/profile'); // Navigate to the profile page upon successful login
+      alert('Login successful!'); // Notify user of successful login
+      navigate('/dashboard'); // Navigate to the dashboard upon successful login
     } catch (err) {
-      setError(err.message);
+      setError(err.message); // Set error message if login fails
     } finally {
       setLoading(false);
     }

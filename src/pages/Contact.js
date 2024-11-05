@@ -51,7 +51,7 @@ function Contact() {
         <a href="mailto:contactherpath@gmail.com" className="underline text-yellow-300 hover:text-yellow-400"> Contact@herpath.com  </a>.
       </p>
       <p className="text-md sm:text-lg text-center max-w-xl mb-8">
-        You can also find us on our social media channels, or fill out the form below to send us a message directly.
+        You can also find us on our social media channels found in our about page, or fill out the form below to send us a message directly.
       </p>
       {/* Contact Form */}
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">

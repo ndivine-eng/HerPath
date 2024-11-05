@@ -27,6 +27,56 @@
     - Firestore (Database)
     - Hosting
 
+
+## 📌 Functional Requirements
+
+1. **User Registration & Authentication**  
+   - Secure user sign-up, login, and logout through Firebase Authentication.
+
+2. **Personalized Career Guidance**  
+   - Match users with mentors based on their career goals, interests, and skill levels.
+
+3. **Resource and Course Access**  
+   - Users can browse and access curated resources, courses, and tutorials that support career and skill development.
+
+4. **Community Engagement & Networking**  
+   - Enable peer support and networking through forums, Q&A sections, and mentor connections.
+
+5. **Progress Tracking**  
+   - Track users’ learning progress and provide feedback on completed tasks and achievements.
+
+6. **Real-Time Notifications**  
+   - Users receive real-time updates on new resources, mentor messages, and event reminders.
+
+7. **Event and Workshop Listings**  
+   - Display upcoming events, webinars, and workshops relevant to skill-building and career growth.
+
+8. **Job Board Access**  
+   - Show job listings and internships tailored to users' skill levels and interests.
+
+## 🔧 Non-Functional Requirements
+
+1. **Usability**  
+   - A user-friendly and intuitive interface, making it accessible for users with varied technical skills.
+
+2. **Scalability**  
+   - The app can handle a growing number of users and additional features as more people join.
+
+3. **Performance**  
+   - Fast load times and responsiveness, even with multiple concurrent users.
+
+4. **Security**  
+   - Ensures user data protection with secure authentication, encrypted data storage, and privacy compliance.
+
+5. **Reliability**  
+   - High availability and minimal downtime to support consistent access for users.
+
+6. **Maintainability**  
+   - Organized code structure to facilitate easy updates, debugging, and new feature additions.
+
+7. **Cross-Platform Compatibility**  
+   - Compatible across different devices, especially for users on both desktop and mobile.
+
 ## 📦 Getting Started
 
 ### Prerequisites

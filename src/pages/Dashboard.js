@@ -55,19 +55,52 @@ function Dashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-white rounded shadow-md p-4">
             <h3 className="font-bold">Career Path Planning</h3>
-            <video controls className="w-full mt-2 rounded">
-              <source src="https://example.com/video1.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            <iframe
+              width="100%"
+              height="200"
+              src="https://www.youtube.com/embed/jVssNpBk37k"
+              title="Career Path Planning"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+          <div className="bg-white rounded shadow-md p-4">
+            <h3 className="font-bold">Financial Literacy</h3>
+            <iframe
+              width="100%"
+              height="200"
+              src="https://www.youtube.com/embed/q5JWp47z4bY"
+              title="Financial Literacy"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </div>
           <div className="bg-white rounded shadow-md p-4">
             <h3 className="font-bold">Communication Skills</h3>
-            <video controls className="w-full mt-2 rounded">
-              <source src="https://example.com/video2.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            <iframe
+              width="100%"
+              height="200"
+              src="https://www.youtube.com/embed/7hr60EumwQ4"
+              title="Communication Skills"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </div>
-          {/* Add more video sections as needed */}
+          <div className="bg-white rounded shadow-md p-4">
+            <h3 className="font-bold">Mastering the Art of Interview</h3>
+            <iframe
+              width="100%"
+              height="200"
+              src="https://www.youtube.com/embed/ppf9j8x0LA8"
+              title="Mastering the Art of Interview"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
         </div>
       </div>
 

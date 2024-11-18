@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase'; // Adjust the path as necessary
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
-import { db } from '../firebase'; // Import Firestore database
+import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom'; // For navigation
+import { db } from '../firebase';
 import { setDoc, doc } from 'firebase/firestore';
 
 function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState(''); // New state for name
-  const [bio, setBio] = useState(''); // New state for bio
-  const [profilePhoto, setProfilePhoto] = useState(null); // New state for profile photo
+  const [name, setName] = useState('');
+  const [bio, setBio] = useState('');
+  const [profilePhoto, setProfilePhoto] = useState(null);
+  const [role, setRole] = useState('student'); // State to track role selection (student or mentor)
+  const [availability, setAvailability] = useState(''); // Availability field
+  const [expertise, setExpertise] = useState(''); // Expertise field
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate(); // For navigation after registration
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,23 +24,30 @@ function Register() {
     setError('');
 
     try {
-      // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Prepare user data to save in Firestore
       const userData = {
         email: user.email,
         name: name,
         bio: bio,
-        profilePhoto: profilePhoto ? await uploadProfilePhoto(profilePhoto) : null, // Function to upload photo if necessary
+        profilePhoto: profilePhoto ? await uploadProfilePhoto(profilePhoto) : null,
+        role: role, // Save the role (student or mentor)
+        availability: availability, // Save the availability for mentors
+        expertise: expertise, // Save the expertise for mentors
       };
 
       // Save user data to Firestore
       await setDoc(doc(db, 'users', user.uid), userData);
 
       alert('Registration successful!');
-      navigate('/login'); // Navigate to the login page after successful registration
+
+      // Navigate based on the role
+      if (role === 'student') {
+        navigate('/login'); // Navigate to login page after student registration
+      } else {
+        navigate('/mentor-details'); // Navigate to MentorDetails page after mentor registration
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -47,17 +57,32 @@ function Register() {
 
   // Function to handle profile photo upload (if needed)
   const uploadProfilePhoto = async (file) => {
-    // Implement your photo upload logic here, e.g., using Firebase Storage
-    // Return the URL of the uploaded photo
-    return 'url_of_uploaded_photo'; // Placeholder return
+    return 'url_of_uploaded_photo'; // Placeholder return for now
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-teal-500 to-blue-800 text-white p-6">
       <h1 className="text-4xl font-extrabold mb-6">Register</h1>
+      
+      {/* Buttons to switch between student and mentor registration */}
+      <div className="mb-6">
+        <button
+          onClick={() => setRole('mentor')}
+          className={`mr-4 py-2 px-6 rounded-lg ${role === 'mentor' ? 'bg-teal-600' : 'bg-teal-400'}`}
+        >
+          Register as Mentor
+        </button>
+        <button
+          onClick={() => setRole('student')}
+          className={`py-2 px-6 rounded-lg ${role === 'student' ? 'bg-teal-600' : 'bg-teal-400'}`}
+        >
+          Register as Student
+        </button>
+      </div>
+
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         {error && <div className="text-red-500 mb-4">{error}</div>}
-        
+
         <div className="mb-4">
           <label className="block text-teal-600 font-semibold mb-2" htmlFor="name">Name</label>
           <input
@@ -70,28 +95,58 @@ function Register() {
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-teal-600 font-semibold mb-2" htmlFor="bio">Bio</label>
-          <textarea
-            id="bio"
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            className="border rounded py-2 px-3 text-gray-800 w-full focus:outline-none focus:ring-2 focus:ring-teal-400"
-            rows="3"
-            required
-          />
-        </div>
+        {role === 'mentor' && (
+          <>
+            <div className="mb-4">
+              <label className="block text-teal-600 font-semibold mb-2" htmlFor="bio">Bio</label>
+              <textarea
+                id="bio"
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                className="border rounded py-2 px-3 text-gray-800 w-full focus:outline-none focus:ring-2 focus:ring-teal-400"
+                rows="3"
+                required
+              />
+            </div>
 
-        <div className="mb-4">
-          <label className="block text-teal-600 font-semibold mb-2" htmlFor="profilePhoto">Profile Photo</label>
-          <input
-            type="file"
-            id="profilePhoto"
-            onChange={(e) => setProfilePhoto(e.target.files[0])} // Set selected file
-            className="border rounded py-2 px-3 text-gray-800 w-full focus:outline-none focus:ring-2 focus:ring-teal-400"
-            accept="image/*"
-          />
-        </div>
+            <div className="mb-4">
+              <label className="block text-teal-600 font-semibold mb-2" htmlFor="availability">Availability</label>
+              <input
+                type="text"
+                id="availability"
+                value={availability}
+                onChange={(e) => setAvailability(e.target.value)}
+                className="border rounded py-2 px-3 text-gray-800 w-full focus:outline-none focus:ring-2 focus:ring-teal-400"
+                required
+                placeholder="e.g. Weekdays from 9am to 5pm"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-teal-600 font-semibold mb-2" htmlFor="expertise">Expertise</label>
+              <input
+                type="text"
+                id="expertise"
+                value={expertise}
+                onChange={(e) => setExpertise(e.target.value)}
+                className="border rounded py-2 px-3 text-gray-800 w-full focus:outline-none focus:ring-2 focus:ring-teal-400"
+                required
+                placeholder="e.g. Software Engineering, Agriculture"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-teal-600 font-semibold mb-2" htmlFor="profilePhoto">Profile Photo</label>
+              <input
+                type="file"
+                id="profilePhoto"
+                onChange={(e) => setProfilePhoto(e.target.files[0])}
+                className="border rounded py-2 px-3 text-gray-800 w-full focus:outline-none focus:ring-2 focus:ring-teal-400"
+                accept="image/*"
+              />
+            </div>
+          </>
+        )}
 
         <div className="mb-4">
           <label className="block text-teal-600 font-semibold mb-2" htmlFor="email">Email</label>
@@ -125,7 +180,6 @@ function Register() {
           {loading ? 'Registering...' : 'Register'}
         </button>
 
-        {/* Link to Login page */}
         <div className="mt-4 text-center">
           <p className="text-teal-600">
             Already have an account?{' '}

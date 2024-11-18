@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
   const [courses, setCourses] = useState([
@@ -7,6 +8,7 @@ function Dashboard() {
     { title: 'Effective Communication Skills', description: 'Enhance your communication skills for personal and professional growth.' }
   ]);
   const [newCourse, setNewCourse] = useState('');
+  const navigate = useNavigate();
 
   const handleAddCourse = () => {
     if (newCourse) {
@@ -14,14 +16,17 @@ function Dashboard() {
       setNewCourse('');
     }
   };
+  const handleNavigateToMentorship = () => {
+    navigate('/mentorship');
+  };
 
   return (
-    <div className="min-h-screen p-5 bg-gray-100 text-gray-800">
-      <h1 className="text-3xl font-bold mb-5 text-center">Dashboard</h1>
+    <div className="min-h-screen p-8 md:p-12 bg-gray-100 text-gray-800">
+      <h1 className="text-3xl font-bold mb-6 text-center">Dashboard</h1>
 
       {/* Available Courses Section */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-semibold mb-3">Available Courses</h2>
+      <div className="mb-10">
+        <h2 className="text-2xl font-semibold mb-4">Available Courses</h2>
         <ul className="space-y-4">
           {courses.map((course, index) => (
             <li key={index} className="p-4 bg-white rounded shadow-md">
@@ -49,10 +54,20 @@ function Dashboard() {
         </div>
       </div>
 
+      {/* Mentorship Navigation Button */}
+      <div className="mb-10">
+        <button
+          onClick={handleNavigateToMentorship}
+          className="w-full md:w-auto bg-green-500 text-white py-3 px-6 rounded hover:bg-green-400 font-semibold mx-auto block md:mx-0"
+        >
+          Connect with a Mentor
+        </button>
+      </div>
+
       {/* Video Resources Section */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-semibold mb-3">Video Resources</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="mb-10">
+        <h2 className="text-2xl font-semibold mb-4">Video Resources</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="bg-white rounded shadow-md p-4">
             <h3 className="font-bold">Career Path Planning</h3>
             <iframe
@@ -106,7 +121,7 @@ function Dashboard() {
 
       {/* FAQ Section */}
       <div>
-        <h2 className="text-2xl font-semibold mb-3">Frequently Asked Questions</h2>
+        <h2 className="text-2xl font-semibold mb-4">Frequently Asked Questions</h2>
         <ul className="space-y-4">
           <li className="bg-white p-4 rounded shadow-md">
             <h3 className="font-bold">How do I choose the right career path?</h3>
@@ -116,7 +131,6 @@ function Dashboard() {
             <h3 className="font-bold">What resources can I use for financial literacy?</h3>
             <p>Our "Basic Financial Literacy" course covers the fundamentals to get you started.</p>
           </li>
-          {/* Add more FAQ items as needed */}
         </ul>
       </div>
     </div>

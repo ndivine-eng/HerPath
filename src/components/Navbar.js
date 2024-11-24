@@ -37,16 +37,6 @@ const Navbar = ({ user, onLogout }) => {
             </li>
             <li>
               <NavLink 
-                to="/about" 
-                className="text-white hover:text-gray-200" 
-                style={({ isActive }) => isActive ? { color: 'yellow', fontWeight: 'bold' } : {}}
-                aria-label="Learn more about us"
-              >
-                About
-              </NavLink>
-            </li>
-            <li>
-              <NavLink 
                 to="/contact" 
                 className="text-white hover:text-gray-200" 
                 style={({ isActive }) => isActive ? { color: 'yellow', fontWeight: 'bold' } : {}}
@@ -55,6 +45,17 @@ const Navbar = ({ user, onLogout }) => {
                 Contact
               </NavLink>
             </li>
+            <li>
+              <NavLink 
+                to="/about" 
+                className="text-white hover:text-gray-200" 
+                style={({ isActive }) => isActive ? { color: 'yellow', fontWeight: 'bold' } : {}}
+                aria-label="Learn more about us"
+              >
+                About
+              </NavLink>
+            </li>
+           
             {!user ? (
               <>
              

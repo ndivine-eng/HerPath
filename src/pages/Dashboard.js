@@ -1,37 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
   const [courses, setCourses] = useState([
-    { title: 'Introduction to Career Planning', description: 'Learn how to navigate your career path with strategic planning.' },
-    { title: 'Basic Financial Literacy', description: 'Understand the basics of managing finances for a secure future.' },
-    { title: 'Effective Communication Skills', description: 'Enhance your communication skills for personal and professional growth.' }
+    { title: 'Introduction to Career Planning', description: 'Learn how to navigate your career path with strategic planning.', link: 'https://www.nvcc.edu/dist/files/sites/student-resources/career-services/introduction_to_the_career_planning_process.pdf' },
+    { title: 'Basic Financial Literacy', description: 'Understand the basics of managing finances for a secure future.', link: 'https://www.capitalone.com/learn-grow/money-management/financial-literacy/' },
+    { title: 'Effective Communication Skills', description: 'Enhance your communication skills for personal and professional growth.', link: 'https://www.instagantt.com/project-management/top-10-skills-for-effective-communication' }
   ]);
-  const [newCourse, setNewCourse] = useState('');
+  const [newCourse, setNewCourse] = useState({ title: '', description: '', link: '' });
+  const [darkMode, setDarkMode] = useState(false);
+  const [userName, setUserName] = useState("User");
   const navigate = useNavigate();
 
+  // Load theme preference from localStorage on initial render
+  useEffect(() => {
+    const savedMode = localStorage.getItem('theme');
+    if (savedMode) {
+      setDarkMode(savedMode === 'dark');
+    }
+  }, []);
+
+  // Save theme preference to localStorage
+  useEffect(() => {
+    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
+
   const handleAddCourse = () => {
-    if (newCourse) {
-      setCourses([...courses, { title: newCourse, description: 'Newly added course' }]);
-      setNewCourse('');
+    if (newCourse.title && newCourse.link) {
+      setCourses([...courses, { ...newCourse, description: newCourse.description || 'Newly added course' }]);
+      setNewCourse({ title: '', description: '', link: '' });
     }
   };
+
   const handleNavigateToMentorship = () => {
     navigate('/mentorship');
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
-    <div className="min-h-screen p-8 md:p-12 bg-gray-100 text-gray-800">
-      <h1 className="text-3xl font-bold mb-6 text-center">Dashboard</h1>
+    <div className={`min-h-screen p-8 md:p-12 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}>
+      {/* Dark Mode Toggle */}
+      <button onClick={toggleDarkMode} className="absolute top-4 left-4 bg-gray-700 text-white py-2 px-4 rounded-md">
+        {darkMode ? 'Light Mode' : 'Dark Mode'}
+      </button>
+
+      {/* Welcome Section */}
+      <h1 className="text-3xl font-bold mb-6 text-center">{`Welcome back, ${userName}!`}</h1>
+
+      {/* Notifications Section */}
+      <div className={`p-4 rounded-md mb-6 ${darkMode ? 'bg-yellow-100 text-black' : 'bg-yellow-100 text-gray-900'}`}>
+  <h3 className="font-semibold">Upcoming Event</h3>
+  <p>Join our webinar on <strong>Career Success Strategies</strong> this Friday at 5 PM.</p>
+</div>
+
 
       {/* Available Courses Section */}
       <div className="mb-10">
         <h2 className="text-2xl font-semibold mb-4">Available Courses</h2>
         <ul className="space-y-4">
           {courses.map((course, index) => (
-            <li key={index} className="p-4 bg-white rounded shadow-md">
+            <li key={index} className={`p-4 rounded shadow-md ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}>
               <h3 className="text-xl font-bold">{course.title}</h3>
               <p>{course.description}</p>
+              <a href={course.link} className="text-blue-500 mt-2 inline-block" target="_blank" rel="noopener noreferrer">Access Course</a>
             </li>
           ))}
         </ul>
@@ -40,10 +74,24 @@ function Dashboard() {
         <div className="mt-6 flex items-center">
           <input
             type="text"
-            placeholder="Add a new course"
+            placeholder="Course Title"
             className="p-2 border border-gray-300 rounded flex-grow mr-2"
-            value={newCourse}
-            onChange={(e) => setNewCourse(e.target.value)}
+            value={newCourse.title}
+            onChange={(e) => setNewCourse({ ...newCourse, title: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="Course Link"
+            className="p-2 border border-gray-300 rounded flex-grow mr-2"
+            value={newCourse.link}
+            onChange={(e) => setNewCourse({ ...newCourse, link: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="Course Description"
+            className="p-2 border border-gray-300 rounded flex-grow mr-2"
+            value={newCourse.description}
+            onChange={(e) => setNewCourse({ ...newCourse, description: e.target.value })}
           />
           <button
             onClick={handleAddCourse}
@@ -52,6 +100,15 @@ function Dashboard() {
             Add Course
           </button>
         </div>
+      </div>
+
+      {/* Course Progress Section */}
+      <div className="mb-10">
+        <h2 className="text-2xl font-semibold mb-4">Your Course Progress</h2>
+        <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
+          <div className="bg-blue-500 h-4 rounded-full" style={{ width: '60%' }}></div>
+        </div>
+        <p>60% of your courses are completed. Keep it up!</p>
       </div>
 
       {/* Mentorship Navigation Button */}
@@ -64,10 +121,20 @@ function Dashboard() {
         </button>
       </div>
 
+      {/* Featured Mentor Section */}
+      <div className="bg-blue-100 p-4 rounded-md shadow mb-6">
+        <h3 className="font-semibold">Featured Mentor: John Doe</h3>
+        <p>Expert in Career Coaching with 10+ years of experience.</p>
+        <button className="bg-blue-500 text-white py-2 px-4 rounded mt-2">Connect</button>
+      </div>
+
       {/* Video Resources Section */}
       <div className="mb-10">
-        <h2 className="text-2xl font-semibold mb-4">Video Resources</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <h2 className="text-2xl font-semibold mb-4">Essential Video Resources</h2>
+        <p className="mb-4">Our handpicked video resources will guide you through key aspects of career development and personal growth.</p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {/* Each Video Item */}
           <div className="bg-white rounded shadow-md p-4">
             <h3 className="font-bold">Career Path Planning</h3>
             <iframe
@@ -117,21 +184,6 @@ function Dashboard() {
             ></iframe>
           </div>
         </div>
-      </div>
-
-      {/* FAQ Section */}
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">Frequently Asked Questions</h2>
-        <ul className="space-y-4">
-          <li className="bg-white p-4 rounded shadow-md">
-            <h3 className="font-bold">How do I choose the right career path?</h3>
-            <p>Consider your interests, strengths, and seek guidance from mentors or professionals.</p>
-          </li>
-          <li className="bg-white p-4 rounded shadow-md">
-            <h3 className="font-bold">What resources can I use for financial literacy?</h3>
-            <p>Our "Basic Financial Literacy" course covers the fundamentals to get you started.</p>
-          </li>
-        </ul>
       </div>
     </div>
   );

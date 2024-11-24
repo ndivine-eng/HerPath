@@ -1,14 +1,14 @@
 import React, { useState } from 'react'; 
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase'; // Adjust the path as necessary
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { signInWithEmailAndPassword } from 'firebase/auth'; 
+import { auth } from '../firebase'; 
+import { useNavigate } from 'react-router-dom'; 
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // Initialize the navigate function
+  const [email, setEmail] = useState(''); 
+  const [password, setPassword] = useState(''); 
+  const [error, setError] = useState(''); 
+  const [loading, setLoading] = useState(false); 
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,11 +16,13 @@ function Login() {
     setError('');
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      alert('Login successful!'); // Notify user of successful login
-      navigate('/dashboard'); // Navigate to the dashboard upon successful login
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user; // Get the user object after login
+      alert('Login successful!');
+      // Navigate to dashboard after login
+      navigate('/dashboard', { state: { userName: user.displayName } }); // Pass user's name as state
     } catch (err) {
-      setError(err.message); // Set error message if login fails
+      setError(err.message); 
     } finally {
       setLoading(false);
     }

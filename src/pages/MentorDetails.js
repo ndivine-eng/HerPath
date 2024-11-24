@@ -4,7 +4,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+
 
 function MentorDetails() {
   const { userId } = useParams(); // Get userId from the URL
@@ -89,7 +89,7 @@ function MentorDetails() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      
       <div className="flex-grow bg-gradient-to-b from-teal-500 to-blue-800 text-white p-6">
         <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
           <h1 className="text-4xl font-extrabold mb-6 text-center">Complete Your Mentor Profile</h1>
@@ -207,7 +207,7 @@ function MentorDetails() {
           </form>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 }

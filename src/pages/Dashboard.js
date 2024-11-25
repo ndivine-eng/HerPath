@@ -102,14 +102,18 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Course Progress Section */}
-      <div className="mb-10">
-        <h2 className="text-2xl font-semibold mb-4">Your Course Progress</h2>
-        <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
-          <div className="bg-blue-500 h-4 rounded-full" style={{ width: '60%' }}></div>
-        </div>
-        <p>60% of your courses are completed. Keep it up!</p>
-      </div>
+      {/* Quiz Navigation Button */}
+<div className="mb-10">
+  <h2 className="text-2xl font-semibold mb-4">Take a Quiz</h2>
+  <p className="mb-4">Test your knowledge and track your progress with our interactive quizzes!</p>
+  <button
+    onClick={() => navigate('/quiz')}
+    className="w-full md:w-auto bg-purple-500 text-white py-3 px-6 rounded hover:bg-purple-400 font-semibold mx-auto block md:mx-0"
+  >
+    Go to Quiz Page
+  </button>
+</div>
+
 
       {/* Mentorship Navigation Button */}
       <div className="mb-10">

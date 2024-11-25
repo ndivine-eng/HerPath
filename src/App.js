@@ -12,6 +12,7 @@ import ProfileUpdate from './pages/ProfileUpdate';
 import Dashboard from './pages/Dashboard';
 import Mentorship from './pages/Mentorship';
 import MentorDetails from './pages/MentorDetails';
+import Quiz from './pages/Quiz';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -45,6 +46,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/mentorship" element={<Mentorship />} />
             <Route path="/mentor-details" element={<MentorDetails />} />
+            <Route path="/quiz" element={<Quiz />} />
+            
           </Routes>
         </div>
         <Footer />

@@ -1,4 +1,3 @@
-// src/pages/Mentorship.js
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase'; // Ensure correct path to firebase.js
 import { collection, getDocs } from 'firebase/firestore';
@@ -12,6 +11,33 @@ function Mentorship() {
   const [loading, setLoading] = useState(true);
   const [selectedMentor, setSelectedMentor] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Check localStorage for dark mode preference on component mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setIsDarkMode(savedTheme === 'dark');
+    }
+  }, []);
+
+  // Toggle dark mode and save preference to localStorage
+  const toggleDarkMode = () => {
+    setIsDarkMode(prevMode => {
+      const newMode = !prevMode;
+      localStorage.setItem('theme', newMode ? 'dark' : 'light');
+      return newMode;
+    });
+  };
+
+  // Apply dark or light theme class based on state
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, [isDarkMode]);
 
   // Fetch mentors from Firestore on component mount
   useEffect(() => {
@@ -23,9 +49,9 @@ function Mentorship() {
           const data = doc.data();
           return {
             id: doc.id,
-            name: data.name || 'Unknown Name', // Default value
-            expertise: data.expertise || 'No expertise provided', // Default value
-            availability: data.availability || 'Unavailable', // Default value
+            name: data.name || 'Joe Doe', // Default value
+            expertise: data.expertise || 'Software Engineer ', // Default value
+            availability: data.availability || 'Available in working hours', // Default value
           };
         });
         setMentors(mentorList);
@@ -75,8 +101,16 @@ function Mentorship() {
   }
 
   return (
-    <div className="min-h-screen p-5 bg-gray-100 text-gray-800">
+    <div className={`min-h-screen p-5 text-gray-800 ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-gray-100'}`}>
       <h1 className="text-3xl font-bold mb-5 text-center">Mentorship</h1>
+
+      {/* Dark mode toggle button */}
+      <button
+        onClick={toggleDarkMode}
+        className="p-2 mb-5 text-white bg-blue-500 rounded hover:bg-blue-400"
+      >
+        Toggle {isDarkMode ? 'Light' : 'Dark'} Mode
+      </button>
 
       {/* Search Bar */}
       <div className="mb-5">
